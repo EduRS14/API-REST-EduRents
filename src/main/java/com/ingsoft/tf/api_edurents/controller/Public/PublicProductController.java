@@ -3,6 +3,7 @@ package com.ingsoft.tf.api_edurents.controller.Public;
 import com.ingsoft.tf.api_edurents.dto.product.ShowProductDTO;
 import com.ingsoft.tf.api_edurents.service.Interface.Public.PublicProductService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -55,6 +56,29 @@ public class PublicProductController {
     }
 
     // HU 03
+    @Operation(
+            summary = "Obtener todos los productos",
+            description = "Permite a un usuario obtener una lista de todos los productos disponibles. " +
+                    "Se devuelve una lista de objetos ShowProductDTO, cada uno representando un producto con sus detalles.",
+            tags = {"productos", "publico", "get"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ShowProductDTO.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = { @Content(schema = @Schema())}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    content = { @Content(schema = @Schema())}
+            )
+    })
     @GetMapping
     public ResponseEntity<List<ShowProductDTO>> obtenerProductos(){
         List<ShowProductDTO> productos = publicProductService.obtenerTodosLosProductos();
