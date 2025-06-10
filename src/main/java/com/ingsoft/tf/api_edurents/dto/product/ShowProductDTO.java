@@ -21,29 +21,31 @@ import java.util.List;
 public class ShowProductDTO {
     private Integer id;
 
-    @NotBlank(message = "El nombre del producto no puede estar vacío")
+    //@NotBlank(message = "El nombre del producto no puede estar vacío")
     private String nombre;
 
-    @NotBlank(message = "La descripción no puede estar vacía")
-    @Size(min = 10, message = "La descripción debe tener al menos 10 caracteres")
+    //@NotBlank(message = "La descripción no puede estar vacía")
+    //@Size(min = 10, message = "La descripción debe tener al menos 10 caracteres")
     private String descripcion;
 
-    @DecimalMin(value = "0.01", message = "El precio debe ser mayor a cero")
+    //@DecimalMin(value = "0.01", message = "El precio debe ser mayor a cero")
     private Double precio;
 
-    @NotNull(message = "El estado del producto es obligatorio")
-    @Enumerated(EnumType.STRING)
+    //@NotNull(message = "El estado del producto es obligatorio")
+    //@Enumerated(EnumType.STRING)
     private ProductStatus estado;
 
-    @Min(value = 0, message = "La cantidad disponible no puede ser negativa")
+    //@Min(value = 0, message = "La cantidad disponible no puede ser negativa")
     private Integer cantidad_disponible;
 
-    @NotNull(message = "Debe especificarse si acepta intercambio")
+    //@NotNull(message = "Debe especificarse si acepta intercambio")
     private Boolean acepta_intercambio;
 
     private LocalDate fecha_creacion;
     private LocalDate fecha_modificacion;
     private LocalDate fecha_expiracion;
+
+    private Integer vistas;
 
     private SellerDTO vendedor;
 

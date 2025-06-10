@@ -10,6 +10,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT count(u) > 0 FROM User u WHERE u.correo =:correo")
     boolean existsUserByCorreo(@Param("correo") String correo);
 
+    @Query("SELECT u FROM User u WHERE u.correo =:correo")
+    User findByCorreo(@Param("correo") String correo);
+
     @Query("SELECT u FROM User u WHERE u.correo =:correo AND u.contrasena =:contrasena")
     User findByCorreoAndContrasena(@Param("correo") String correo, @Param("contrasena") String contrasena);
   
