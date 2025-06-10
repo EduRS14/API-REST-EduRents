@@ -15,7 +15,7 @@ import java.util.List;
 public class UserAuthFollowedProductController {
 
     private final UserAuthFollowedProductService userAuthFollowedProductService;
-
+    /*
     //HU 12
 
     // Endpoint 05: POST
@@ -37,6 +37,6 @@ public class UserAuthFollowedProductController {
         List<ShowProductDTO> products = userAuthFollowedProductService.getFollowedProductsByUser(idUser);
         return ResponseEntity.ok(products);
     }
-
+    */
 
 }

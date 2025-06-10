@@ -17,7 +17,7 @@ import java.util.List;
 public class UserAuthAlertController {
     private final UserAuthAlertServiceImpl alertService;
     private final UserAuthFollowedProductServiceImpl followedProductService;
-
+    /*
     //HU 12
     // Endpoint 01: POST
     @PostMapping
@@ -48,6 +48,6 @@ public class UserAuthAlertController {
     }
 
 
-
+    */
 
 }

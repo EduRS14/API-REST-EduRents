@@ -117,6 +117,7 @@ public class PublicProductController {
     }
 
     // HU10
+    /*
     //Endpoint 01:
     @GetMapping("/{id}/stock") //MOSTRAR SOLO LA CANTIDAD DE STOCK POR ID DE PRODUCTO
     public StockDTO obtenerStock(@PathVariable Integer id) {
@@ -154,7 +155,7 @@ public class PublicProductController {
         ShowProductDTO dto = publicProductService.obtenerEstadoAceptaIntercambio(id);
         return ResponseEntity.ok(dto);
     }
-
+    */
 
 
 }

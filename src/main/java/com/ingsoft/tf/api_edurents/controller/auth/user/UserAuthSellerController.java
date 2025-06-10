@@ -15,7 +15,7 @@ import java.util.List;
 public class UserAuthSellerController {
 
     // HU 11
-    /*
+
     private final UserAuthSellerService sellerService;
 
 
@@ -31,5 +31,5 @@ public class UserAuthSellerController {
     public ResponseEntity<List<ShowTransactionDTO>> getTransactions(@PathVariable Integer idSeller) {
         return ResponseEntity.ok(sellerService.getTransactionsBySeller(idSeller));
     }
-    */
+
 }
