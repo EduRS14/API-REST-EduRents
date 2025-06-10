@@ -2,6 +2,12 @@ package com.ingsoft.tf.api_edurents.controller.Public;
 
 import com.ingsoft.tf.api_edurents.dto.product.ShowProductDTO;
 import com.ingsoft.tf.api_edurents.service.Interface.Public.PublicProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "Producto_Publico", description = "API de Gestion de Productos para un usuario registrado/no registrado")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/public/products")
@@ -20,6 +27,27 @@ public class PublicProductController {
     private final PublicProductService publicProductService;
 
     //HU 01
+    @Operation(
+            summary = "Obtener un producto por su ID",
+            description = "Permite a un usuario obtener los detalles de un producto específico por su ID. " +
+                    "Se devuelve un objeto ShowProductDTO con los detalles del producto, como su nombre, descripción, " +
+                    "precio y estado de disponibilidad.",
+            tags = {"productos", "publico", "get"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = { @Content(schema = @Schema(implementation = ShowProductDTO.class), mediaType = "application/json") }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = { @Content(schema = @Schema())}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    content = { @Content(schema = @Schema())}
+            )
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ShowProductDTO> obtenerProductoPorId(@PathVariable Integer id){
         ShowProductDTO producto = publicProductService.obtenerProductoPorId(id);
