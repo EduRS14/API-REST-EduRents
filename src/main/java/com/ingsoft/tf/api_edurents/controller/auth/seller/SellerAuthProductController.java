@@ -39,7 +39,7 @@ public class SellerAuthProductController {
                     content = { @Content(schema = @Schema(implementation = ShowProductDTO.class), mediaType = "application/json") }
             ),
             @ApiResponse(
-                    responseCode = "404",
+                    responseCode = "400",
                     content = { @Content(schema = @Schema())}
             ),
             @ApiResponse(
