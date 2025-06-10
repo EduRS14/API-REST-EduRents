@@ -38,5 +38,5 @@ public class UserAuthFollowedProductController {
         return ResponseEntity.ok(products);
     }
     */
-     
+
 }

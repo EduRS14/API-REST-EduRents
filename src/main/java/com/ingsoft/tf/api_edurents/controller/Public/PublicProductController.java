@@ -17,7 +17,7 @@ import java.util.List;
 public class PublicProductController {
 
     private final PublicProductService publicProductService;
-    /*
+
     //HU 01
     @GetMapping("/{id}")
     public ResponseEntity<ShowProductDTO> obtenerProductoPorId(@PathVariable Integer id){
@@ -115,7 +115,7 @@ public class PublicProductController {
         List<ShowProductDTO> productos = publicProductService.obtener10ProductosRecientes();
         return new ResponseEntity<List<ShowProductDTO>>(productos, HttpStatus.OK);
     }
-    */
+    
     // HU10
     //Endpoint 01:
     @GetMapping("/{id}/stock") //MOSTRAR SOLO LA CANTIDAD DE STOCK POR ID DE PRODUCTO
