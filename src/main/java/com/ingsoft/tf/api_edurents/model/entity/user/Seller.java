@@ -14,9 +14,16 @@ public class Seller {
     @Id
     private Integer id;
 
+    @Column(name = "resena", nullable = false)
     private String resena;
+
+    @Column(name = "confiabilidad", nullable = false)
     private Boolean confiabilidad;
+
+    @Column(name = "sin_demoras", nullable = false)
     private Boolean sin_demoras;
+
+    @Column(name = "buena_atencion", nullable = false)
     private Boolean buena_atencion;
 
     @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL, orphanRemoval = true)

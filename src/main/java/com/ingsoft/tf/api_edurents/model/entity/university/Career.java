@@ -16,7 +16,10 @@ public class Career {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "nombre", nullable = false)
     private String nombre;
+
+    @Column(name = "codigo", nullable = false)
     private String codigo;
 
     @OneToMany(mappedBy = "carrera", cascade = CascadeType.ALL, orphanRemoval = true)

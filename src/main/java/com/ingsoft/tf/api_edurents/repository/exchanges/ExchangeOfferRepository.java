@@ -13,4 +13,7 @@ public interface ExchangeOfferRepository extends JpaRepository<ExchangeOffer, In
 
     @Query("SELECT eo FROM ExchangeOffer eo WHERE eo.producto.vendedor.id = :idVendedor")
     List<ExchangeOffer> findAllByVendedorId(@Param("idVendedor") Integer idVendedor);
+
+    List<ExchangeOffer> findByProducto_Id(Integer idProduct);
+
 }

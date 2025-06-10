@@ -16,13 +16,21 @@ public class Transaction {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    private PaymentMethod metodo_pago;
+    @Column(name = "metodo_pago", nullable = false)
+    private PaymentMethod metodoPago;
 
+    @Column(name = "fecha_transaccion", nullable = false)
     private LocalDateTime fecha_transaccion;
 
+    @Column(name = "estado", nullable = false)
     @Enumerated(EnumType.STRING)
     private TransactionStatus estado;
 
+    @Column(name = "fecha_confirmacion_entrega", nullable = false)
+    private LocalDateTime fecha_confirmacion_entrega;
+
+    @Column(name = "motivo_reclamo", length = 500)
+    private String motivo_reclamo;
 
     @ManyToOne
     @JoinColumn(name = "id_producto",
