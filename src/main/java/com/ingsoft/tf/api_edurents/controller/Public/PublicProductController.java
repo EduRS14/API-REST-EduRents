@@ -115,7 +115,7 @@ public class PublicProductController {
         List<ShowProductDTO> productos = publicProductService.obtener10ProductosRecientes();
         return new ResponseEntity<List<ShowProductDTO>>(productos, HttpStatus.OK);
     }
-    /*
+
     // HU10
     //Endpoint 01:
     @GetMapping("/{id}/stock") //MOSTRAR SOLO LA CANTIDAD DE STOCK POR ID DE PRODUCTO
@@ -154,7 +154,7 @@ public class PublicProductController {
         ShowProductDTO dto = publicProductService.obtenerEstadoAceptaIntercambio(id);
         return ResponseEntity.ok(dto);
     }
-    */
+
 
 
 }

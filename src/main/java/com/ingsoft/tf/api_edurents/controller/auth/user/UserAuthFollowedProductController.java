@@ -17,7 +17,7 @@ public class UserAuthFollowedProductController {
     private final UserAuthFollowedProductService userAuthFollowedProductService;
 
     //HU 12
-    /*
+
     // Endpoint 05: POST
     @PostMapping("/product/{idProduct}/user/{idUser}/follow")
     public ResponseEntity<Void> followProduct(@PathVariable Integer idProduct, @PathVariable Integer idUser) {
@@ -37,6 +37,6 @@ public class UserAuthFollowedProductController {
         List<ShowProductDTO> products = userAuthFollowedProductService.getFollowedProductsByUser(idUser);
         return ResponseEntity.ok(products);
     }
-    */
+
 
 }

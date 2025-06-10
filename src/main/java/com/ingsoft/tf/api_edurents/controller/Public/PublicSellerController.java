@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/public/sellers")
 public class PublicSellerController {
     private final PublicSellerService publicSellerService;
-
+    /*
     //HU 11
     @GetMapping("/{idSeller}")
     public ResponseEntity<SellerDTO> getPublicSellerProfile(@PathVariable Integer idSeller) {
@@ -44,6 +44,6 @@ public class PublicSellerController {
     public ResponseEntity<List<ShowProductDTO>> getSellerProducts(@PathVariable Integer idSeller) {
         return ResponseEntity.ok(publicSellerService.getProductsBySeller(idSeller));
     }
-
+    */
 
 }
