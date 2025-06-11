@@ -27,7 +27,6 @@ public class UserAuthFollowedProductServiceImpl implements UserAuthFollowedProdu
     public void followProduct(Integer idUser, Integer idProduct) {
         User user = userRepository.findById(idUser)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id " + idUser));
-
         Product product = productRepository.findById(idProduct)
                 .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado con id " + idProduct));
 
@@ -37,6 +36,9 @@ public class UserAuthFollowedProductServiceImpl implements UserAuthFollowedProdu
             followedProduct.setUsuario(user);
             followedProduct.setProducto(product);
             followedProduct.setFecha_inicio_seguimiento(LocalDateTime.now().toLocalDate());
+            if (followedProduct.getFecha_inicio_seguimiento() == null) {
+                throw new RuntimeException("La fecha de inicio de seguimiento no puede ser nula");
+            }
             followedProductRepository.save(followedProduct);
         }
     }

@@ -42,6 +42,9 @@ public class UserAuthAlertServiceImpl implements UserAuthAlertService {
 
     @Override
     public void deleteAlert(Integer idAlert) {
+        if (!alertRepository.existsById(idAlert)) {
+            throw new RuntimeException("La alerta no existe");
+        }
         alertRepository.deleteById(idAlert);
     }
 
@@ -58,6 +61,9 @@ public class UserAuthAlertServiceImpl implements UserAuthAlertService {
     @Transactional
     @Override
     public void markAlertAsViewed(Integer idAlert) {
+        if (!alertRepository.existsById(idAlert)) {
+            throw new RuntimeException("La alerta no existe para marcar como vista");
+        }
         alertRepository.markAsViewed(idAlert);
     }
 }

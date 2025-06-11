@@ -22,4 +22,7 @@ public interface AlertRepository extends JpaRepository<Alert, Integer> {
     @Query("UPDATE Alert a SET a.visto = true WHERE a.id = :idAlert")
     void markAsViewed(Integer idAlert);
 
+
+    boolean existsByUsuarioIdAndProductoId(Integer idUsuario, Integer idProducto);
+
 }
