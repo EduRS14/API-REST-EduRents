@@ -14,7 +14,10 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "nombre", nullable = false)
     private String nombre;
+
+    @Column(name = "codigo", nullable = false)
     private String codigo;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
