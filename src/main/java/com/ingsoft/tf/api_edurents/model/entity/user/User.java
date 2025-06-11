@@ -1,6 +1,7 @@
 package com.ingsoft.tf.api_edurents.model.entity.user;
 
 import com.ingsoft.tf.api_edurents.model.entity.exchanges.ExchangeOffer;
+import com.ingsoft.tf.api_edurents.model.entity.product.FollowedProduct;
 import com.ingsoft.tf.api_edurents.model.entity.transfers.Transaction;
 import com.ingsoft.tf.api_edurents.model.entity.university.Career;
 import jakarta.persistence.*;
@@ -18,12 +19,25 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "nombres", nullable = false)
     private String nombres;
+
+    @Column(name = "apellidos", nullable = false)
     private String apellidos;
+
+    @Column(name = "correo", nullable = false)
     private String correo;
+
+    @Column(name = "contrasena", nullable = false)
     private String contrasena;
+
+    @Column(name = "codigo_universitario", nullable = false)
     private String codigo_universitario;
+
+    @Column(name = "ciclo", nullable = false)
     private Byte ciclo;
+
+    @Column(name = "foto_url", nullable = false)
     private String foto_url;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -39,5 +53,8 @@ public class User {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExchangeOffer> intercambios = new ArrayList<ExchangeOffer>();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<FollowedProduct> productos_seguidos;
 
 }

@@ -18,19 +18,35 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "nombre", nullable = false)
     private String nombre;
+
+    @Column(name = "descripcion", nullable = false)
     private String descripcion;
+
+    @Column(name = "precio", nullable = false)
     private Double precio;
 
     @Enumerated(EnumType.STRING)
     private ProductStatus estado;
 
+    @Column(name = "fecha_creacion", nullable = false)
     private LocalDate fecha_creacion;
+
+    @Column(name = "fecha_modificacion")
     private LocalDate fecha_modificacion;
+
+    @Column(name = "fecha_expiracion")
     private LocalDate fecha_expiracion;
 
+    @Column(name = "cantidad_disponible", nullable = false)
     private Integer cantidad_disponible;
+
+    @Column(name = "acepta_intercambio", nullable = false)
     private Boolean acepta_intercambio;
+
+    @Column(name = "vistas")
+    private Integer vistas = 0;
 
     @ManyToOne
     @JoinColumn(name = "id_vendedor",
@@ -51,4 +67,8 @@ public class Product {
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExchangeOffer> intercambios = new ArrayList<ExchangeOffer>();
+
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    private List<FollowedProduct> usuarios_siguiendo;
+
 }
