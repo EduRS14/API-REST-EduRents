@@ -25,7 +25,6 @@ public class UserAuthSellerController {
         return ResponseEntity.ok(sellerService.createSellerIfNotExists(idUser));
     }
 
-
     // Endpoint 07: Transacciones de un vendedor por id
     @GetMapping("/{idSeller}/transactions")
     public ResponseEntity<List<ShowTransactionDTO>> getTransactions(@PathVariable Integer idSeller) {
