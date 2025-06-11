@@ -228,8 +228,14 @@ public class PublicProductServiceImpl implements PublicProductService {
     public StockDTO obtenerStockProductoPorId(Integer idProducto) {
         Product producto = productRepository.findById(idProducto)
                 .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + idProducto));
+
+        if (producto.getCantidad_disponible() < 0) {
+            throw new BadRequestException("Cantidad de stock inválida (negativa)");
+        }
+
         return convertToProductStockDTO(producto);
     }
+
 
     @Transactional
     @Override
@@ -265,19 +271,18 @@ public class PublicProductServiceImpl implements PublicProductService {
     }
     @Override
     public ShowProductDTO obtenerFechaExpiracion(Integer id) {
-        // Obtener el producto de la base de datos
         Product producto = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
 
-        // Verifica si la fecha de expiración es null en la entidad
-        System.out.println("Fecha Expiración en el Producto: " + producto.getFecha_expiracion());
+        if (producto.getFecha_expiracion() != null && producto.getFecha_expiracion().isBefore(LocalDate.now())) {
+            throw new BadRequestException("La oferta del producto ya expiró");
+        }
 
-        // Crear un DTO para devolver solo la información necesaria
         ShowProductDTO dto = new ShowProductDTO();
         dto.setFecha_expiracion(producto.getFecha_expiracion());
-
         return dto;
     }
+
     @Override
     public ShowProductDTO obtenerEstado(Integer id) {
         // Obtener el producto de la base de datos
