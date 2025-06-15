@@ -4,6 +4,7 @@ import com.ingsoft.tf.api_edurents.dto.product.ShowProductDTO;
 import com.ingsoft.tf.api_edurents.dto.user.UserDTO;
 import com.ingsoft.tf.api_edurents.model.entity.transfers.PaymentMethod;
 import com.ingsoft.tf.api_edurents.model.entity.transfers.TransactionStatus;
+import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
@@ -23,5 +24,8 @@ public class ShowTransactionDTO {
 
     @Enumerated(EnumType.STRING)
     private TransactionStatus estado;
+
+    private LocalDateTime fecha_confirmacion_entrega;
+    private String motivo_reclamo;
 
 }

@@ -16,5 +16,6 @@ public class Image {
             referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_producto_imagen"))
     private Product producto;
 
+    @Column(name = "url", nullable = false)
     private String url;
 }
