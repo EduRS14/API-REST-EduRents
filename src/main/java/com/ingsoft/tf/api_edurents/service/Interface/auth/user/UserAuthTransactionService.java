@@ -14,8 +14,7 @@ public interface UserAuthTransactionService {
 
     ShowTransactionDTO crearTransaccion(TransactionDTO transaccionDTO);
     void cancelarTransaccion(Integer id);
-    ShowTransactionDTO obtenerTransaccionPorId(Integer id);
-    List<ShowTransactionDTO> obtenerTransacciones();
+
     ShowTransactionDTO obtenerTransaccionPorIdPorUsuario(Integer idTransaction, Integer idUsuario);
 
     // HU14

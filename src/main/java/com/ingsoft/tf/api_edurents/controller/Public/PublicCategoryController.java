@@ -2,13 +2,10 @@ package com.ingsoft.tf.api_edurents.controller.Public;
 
 import com.ingsoft.tf.api_edurents.dto.product.CategoryDTO;
 import com.ingsoft.tf.api_edurents.service.Interface.Public.PublicCategoryService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.*;
+import io.swagger.v3.oas.annotations.media.*;
+import io.swagger.v3.oas.annotations.responses.*;
+import io.swagger.v3.oas.annotations.tags.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RestController
 @Tag(name = "Categoria_publica", description = "API de Gestion de Categorias")
+@RestController
 @RequestMapping("/public/categories")
 public class PublicCategoryController {
 
     private final PublicCategoryService publicCategoryService;
+
     @Operation(
             summary = "Obtener todas las categorias",
             description = "Devuelve una lista con todas las categorias disponibles.",
-            tags = {"Categorias"}
+            tags = {"Categorias", "publico", "get"}
     )
     @ApiResponses(value = {
             @ApiResponse(

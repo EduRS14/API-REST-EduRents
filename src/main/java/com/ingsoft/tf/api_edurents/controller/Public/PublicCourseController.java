@@ -2,13 +2,10 @@ package com.ingsoft.tf.api_edurents.controller.Public;
 
 import com.ingsoft.tf.api_edurents.dto.university.CourseDTO;
 import com.ingsoft.tf.api_edurents.service.Interface.Public.PublicCourseService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.*;
+import io.swagger.v3.oas.annotations.media.*;
+import io.swagger.v3.oas.annotations.responses.*;
+import io.swagger.v3.oas.annotations.tags.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Tag(name="Cursos", description = "API de filtros para los cursos de una carrera")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/public/courses")
 public class PublicCourseController {
@@ -30,7 +27,7 @@ public class PublicCourseController {
     @Operation(
             summary = "Obtener cursos por ID de carrera",
             description = "Devuelve una lista de cursos asociados a una carrera específica, identificada por su ID.",
-            tags = {"Cursos", "Carreras"}
+            tags = {"Cursos", "Carreras", "publico", "get"}
     )
     @ApiResponses(value = {
             @ApiResponse(

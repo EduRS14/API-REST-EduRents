@@ -100,7 +100,7 @@ public class UserAuthProductServiceImpl implements UserAuthProductService {
     public List<ShowProductDTO> obtenerProductosRecomendados(Integer idCareer){
         List<Product> products = productRepository.findByCareerOrderByViews(idCareer);
         if (products.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontraro productos recomendados para la carrera: " + idCareer);
+            throw new ResourceNotFoundException("No se encontraron productos recomendados para la carrera: " + idCareer);
         }
         return products.stream()
                 .map(producto -> productMapper.toResponse(producto))

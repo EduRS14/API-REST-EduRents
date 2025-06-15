@@ -4,10 +4,15 @@ import com.ingsoft.tf.api_edurents.dto.product.ProductDTO;
 import com.ingsoft.tf.api_edurents.dto.product.ShowProductDTO;
 import com.ingsoft.tf.api_edurents.dto.product.StockDTO;
 import com.ingsoft.tf.api_edurents.service.Interface.admin.AdminProductService;
+import io.swagger.v3.oas.annotations.*;
+import io.swagger.v3.oas.annotations.media.*;
+import io.swagger.v3.oas.annotations.responses.*;
+import io.swagger.v3.oas.annotations.tags.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("admin/products")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminProductController {
 
     private final AdminProductService adminProductService;

@@ -1,24 +1,17 @@
-package com.ingsoft.tf.api_edurents.service;
+package com.ingsoft.tf.api_edurents.service.Public;
 
-import com.ingsoft.tf.api_edurents.controller.Public.PublicCategoryController;
 import com.ingsoft.tf.api_edurents.dto.product.CategoryDTO;
 import com.ingsoft.tf.api_edurents.exception.ResourceNotFoundException;
 import com.ingsoft.tf.api_edurents.mapper.CategoryMapper;
 import com.ingsoft.tf.api_edurents.model.entity.product.Category;
 import com.ingsoft.tf.api_edurents.repository.product.CategoryRepository;
-import com.ingsoft.tf.api_edurents.service.Interface.Public.PublicCategoryService;
 import com.ingsoft.tf.api_edurents.service.impl.Public.PublicCategoryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,7 +19,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-
 
 public class PublicCategoryServiceUnitTest {
 
@@ -94,5 +86,5 @@ public class PublicCategoryServiceUnitTest {
             publicCategoryService.getAllCategories();
         });
     }
-}
 
+}

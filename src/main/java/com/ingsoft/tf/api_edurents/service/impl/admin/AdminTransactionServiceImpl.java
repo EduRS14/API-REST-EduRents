@@ -28,8 +28,28 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminTransactionServiceImpl implements AdminTransactionService {
 
+    @Autowired
+    private TransactionRepository transactionRepository;
 
+    @Autowired
+    private final TransactionsMapper transactionsMapper;
 
+    @Transactional()
+    @Override
+    public ShowTransactionDTO obtenerTransaccionPorId(Integer id) {
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Transacción no encontrada"));
 
+        return transactionsMapper.toResponse(transaction);
+    }
+
+    @Transactional()
+    @Override
+    public List<ShowTransactionDTO> obtenerTransacciones() {
+        return transactionRepository.findAll()
+                .stream()
+                .map(transactionsMapper::toResponse)
+                .collect(Collectors.toList());
+    }
 
 }

@@ -11,17 +11,6 @@ import java.util.List;
 public interface AdminTransactionService {
 
 
-
-
-
-    /*
-    ShowTransactionDTO crearTransaccion(TransactionDTO transaccionDTO);
+    ShowTransactionDTO obtenerTransaccionPorId(Integer id);
     List<ShowTransactionDTO> obtenerTransacciones();
-    List<ShowTransactionDTO> obtenerTransaccionesPorUsuario(Integer idUsuario);
-    List<ShowTransactionDTO> obtenerTransaccionesPorUsuarioPorEstado(Integer idUsuario, TransactionStatus estado);
-    ShowTransactionDTO confirmarEntregaPago(Integer idTransaccion, TransactionStatus nuevoEstado);
-    void cancelarTransaccion(Integer id);
-
-     */
-
 }

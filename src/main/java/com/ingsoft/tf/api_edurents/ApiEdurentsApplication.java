@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 /* Descomentar la siguiente línea para usar la configuración de seguridad por defecto */
-//@SpringBootApplication
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication
+//@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class ApiEdurentsApplication {
 
 	public static void main(String[] args) {

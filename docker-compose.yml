@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: edurents-db
+    restart: always
+    environment:
+      POSTGRES_DB: edurents
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: adminadmin
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - edurents-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: edurents-app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    depends_on:
+      - db
+    networks:
+      - edurents-network
+
+volumes:
+  pgdata:
+
+networks:
+  edurents-network:

@@ -40,7 +40,12 @@ public class User {
     @Column(name = "foto_url", nullable = false)
     private String foto_url;
 
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_rol",
+            referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_usuario_rol"), nullable = false)
+    private Role rol;
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Seller vendedor;
 
     @ManyToOne

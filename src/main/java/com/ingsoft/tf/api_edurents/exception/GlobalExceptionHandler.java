@@ -45,7 +45,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // Incumplimiento en la Validacion de Datos de los atributos
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<CustomErrorResponse> handleRoleNotFoundException(RoleNotFoundException ex, WebRequest request) {
+        CustomErrorResponse err = new CustomErrorResponse(LocalDateTime.now(),
+                ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
+    }
+
+        // Incumplimiento en la Validacion de Datos de los atributos
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {

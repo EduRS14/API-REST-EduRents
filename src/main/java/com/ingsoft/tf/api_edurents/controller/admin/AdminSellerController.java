@@ -1,14 +1,21 @@
 package com.ingsoft.tf.api_edurents.controller.admin;
 
+
 import com.ingsoft.tf.api_edurents.dto.user.SellerDTO;
 import com.ingsoft.tf.api_edurents.service.Interface.admin.AdminSellerService;
+import io.swagger.v3.oas.annotations.*;
+import io.swagger.v3.oas.annotations.media.*;
+import io.swagger.v3.oas.annotations.responses.*;
+import io.swagger.v3.oas.annotations.tags.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("admin/sellers")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminSellerController {
 
     @Autowired

@@ -2,6 +2,7 @@ package com.ingsoft.tf.api_edurents.mapper;
 
 import com.ingsoft.tf.api_edurents.dto.product.ProductDTO;
 import com.ingsoft.tf.api_edurents.dto.product.ShowProductDTO;
+import com.ingsoft.tf.api_edurents.dto.product.StockDTO;
 import com.ingsoft.tf.api_edurents.exception.ResourceNotFoundException;
 import com.ingsoft.tf.api_edurents.model.entity.product.*;
 import com.ingsoft.tf.api_edurents.model.entity.university.CoursesCareers;
@@ -155,5 +156,15 @@ public class ProductMapper {
 
         return dto;
     }
+
+    public StockDTO toStockDTO(Product producto) {
+        StockDTO dto = new StockDTO();
+        dto.setId(producto.getId());
+        dto.setCantidad_disponible(producto.getCantidad_disponible());
+        return dto;
+    }
+
+
+
 
 }

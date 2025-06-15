@@ -20,19 +20,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SellerAuthTransactionServiceImpl implements SellerAuthTransactionService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private AdminProductServiceImpl adminProductService;
+    private final AdminProductServiceImpl adminProductService;
 
-    @Autowired
     private final TransactionsMapper transactionsMapper;
 
     //HU 14

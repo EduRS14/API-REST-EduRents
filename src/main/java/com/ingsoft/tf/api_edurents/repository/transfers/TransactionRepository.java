@@ -5,11 +5,16 @@ import com.ingsoft.tf.api_edurents.model.entity.transfers.Transaction;
 import com.ingsoft.tf.api_edurents.model.entity.transfers.TransactionStatus;
 import com.ingsoft.tf.api_edurents.model.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
+
+    // HU 11
+    @Query("SELECT t FROM Transaction t WHERE t.usuario.id = :idSeller")
+    List<Transaction> findAllBySellerId(Integer idSeller);
 
     // HU 13
     boolean existsByProductoIdAndUsuarioId(Integer idProducto, Integer idUsuario);

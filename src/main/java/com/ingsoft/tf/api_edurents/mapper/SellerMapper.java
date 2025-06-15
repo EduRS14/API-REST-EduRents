@@ -1,6 +1,7 @@
 package com.ingsoft.tf.api_edurents.mapper;
 
 import com.ingsoft.tf.api_edurents.dto.user.SellerDTO;
+import com.ingsoft.tf.api_edurents.dto.user.SellerReputationDTO;
 import com.ingsoft.tf.api_edurents.model.entity.user.Seller;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,17 @@ public class SellerMapper {
         } else {
             dto.setNombreUsuario("");
         }
+
+        return dto;
+    }
+
+    public SellerReputationDTO toSellerReputationDTO(Seller seller) {
+        SellerReputationDTO dto = new SellerReputationDTO();
+
+        dto.setResena(seller.getResena());
+        dto.setConfiabilidad(seller.getConfiabilidad());
+        dto.setSin_demoras(seller.getSin_demoras());
+        dto.setBuena_atencion(seller.getBuena_atencion());
 
         return dto;
     }

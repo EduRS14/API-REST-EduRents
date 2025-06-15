@@ -1,6 +1,8 @@
 package com.ingsoft.tf.api_edurents.service.impl.Public;
 
 import com.ingsoft.tf.api_edurents.dto.product.ShowProductDTO;
+import com.ingsoft.tf.api_edurents.dto.product.StockDTO;
+import com.ingsoft.tf.api_edurents.exception.BadRequestException;
 import com.ingsoft.tf.api_edurents.exception.ResourceNotFoundException;
 import com.ingsoft.tf.api_edurents.mapper.ProductMapper;
 import com.ingsoft.tf.api_edurents.model.entity.product.Product;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -193,7 +196,7 @@ public class PublicProductServiceImpl implements PublicProductService {
         Pageable top10 = PageRequest.of(0, 10);
         List<Product> products = productRepository.findTopProductsByExchangeOfferCount(top10);
         if (products.isEmpty()) {
-            throw new ResourceNotFoundException("No se encontraron productos para el top 10 em base a cantidad de intercambios");
+            throw new ResourceNotFoundException("No se encontraron productos para el top 10 en base a cantidad de intercambios");
         }
         return products.stream()
                 .map(producto -> productMapper.toResponse(producto))
@@ -212,5 +215,68 @@ public class PublicProductServiceImpl implements PublicProductService {
                 .map(producto -> productMapper.toResponse(producto))
                 .collect(Collectors.toList());
     }
+
+    // HU10
+    @Transactional(readOnly = true)
+    @Override
+    public StockDTO obtenerStockProductoPorId(Integer idProducto) {
+        Product producto = productRepository.findById(idProducto)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + idProducto));
+
+        if (producto.getCantidad_disponible() < 0) {
+            throw new BadRequestException("Cantidad de stock inválida (negativa)");
+        }
+
+        return productMapper.toStockDTO(producto);
+    }
+
+
+    @Override
+    public ShowProductDTO obtenerFechaExpiracion(Integer id) {
+        Product producto = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+
+        if (producto.getFecha_expiracion() != null && producto.getFecha_expiracion().isBefore(LocalDate.now())) {
+            throw new BadRequestException("La oferta del producto ya expiró");
+        }
+
+        ShowProductDTO dto = new ShowProductDTO();
+        dto.setFecha_expiracion(producto.getFecha_expiracion());
+        return dto;
+    }
+
+    @Override
+    public ShowProductDTO obtenerEstado(Integer id) {
+        // Obtener el producto de la base de datos
+        Product producto = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+
+        // Verifica si la fecha de expiración es null en la entidad
+        System.out.println("Estado del producto: " + producto.getEstado());
+
+        // Crear un DTO para devolver solo la información necesaria
+        ShowProductDTO dto = new ShowProductDTO();
+        dto.setEstado(producto.getEstado());
+
+        return dto;
+    }
+
+    @Override
+    public ShowProductDTO obtenerEstadoAceptaIntercambio(Integer id) {
+        // Obtener el producto de la base de datos
+        Product producto = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+
+        // Verifica si la fecha de expiración es null en la entidad
+        System.out.println("Estado de acepta intercambio del producto: " + producto.getAcepta_intercambio());
+
+        // Crear un DTO para devolver solo la información necesaria
+        ShowProductDTO dto = new ShowProductDTO();
+        dto.setAcepta_intercambio(producto.getAcepta_intercambio());
+
+        return dto;
+    }
+
+
 
 }

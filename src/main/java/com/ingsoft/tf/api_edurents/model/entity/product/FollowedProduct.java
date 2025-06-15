@@ -2,9 +2,10 @@ package com.ingsoft.tf.api_edurents.model.entity.product;
 
 import com.ingsoft.tf.api_edurents.model.entity.user.User;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
-
+@Data
 @Entity
 @Table(name = "productos_seguidos")
 public class FollowedProduct {

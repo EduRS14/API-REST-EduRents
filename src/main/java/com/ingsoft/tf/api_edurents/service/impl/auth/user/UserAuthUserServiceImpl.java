@@ -19,14 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserAuthUserServiceImpl implements UserAuthUserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
-    @Autowired
-    private CareerRepository careerRepository;
+    private final CareerRepository careerRepository;
 
     @Transactional(readOnly = true)
     @Override

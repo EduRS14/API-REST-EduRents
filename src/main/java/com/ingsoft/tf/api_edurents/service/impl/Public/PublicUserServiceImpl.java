@@ -1,6 +1,9 @@
 package com.ingsoft.tf.api_edurents.service.impl.Public;
 
+import com.ingsoft.tf.api_edurents.config.TokenProvider;
+import com.ingsoft.tf.api_edurents.config.UserPrincipal;
 import com.ingsoft.tf.api_edurents.dto.auth.RecoverProcessDTO;
+import com.ingsoft.tf.api_edurents.dto.user.AuthResponseDTO;
 import com.ingsoft.tf.api_edurents.dto.user.LoginDTO;
 import com.ingsoft.tf.api_edurents.dto.user.RegisterDTO;
 import com.ingsoft.tf.api_edurents.dto.user.UserDTO;
@@ -15,7 +18,11 @@ import com.ingsoft.tf.api_edurents.repository.user.UserRepository;
 import com.ingsoft.tf.api_edurents.service.Interface.Public.PublicUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +44,13 @@ public class PublicUserServiceImpl implements PublicUserService {
     @Autowired
     private UserMapper userMapper;
 
+    private final AuthenticationManager authenticationManager;
+
+    private final TokenProvider tokenProvider;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     @Override
     public UserDTO registerUsuario(RegisterDTO datosRegistro) {
@@ -51,17 +65,32 @@ public class PublicUserServiceImpl implements PublicUserService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDTO loginUsuario(LoginDTO datosLogin) {
-        if (userRepository.existsUserByCorreo(datosLogin.getCorreo())){
-            User usuario = userRepository.findByCorreoAndContrasena(datosLogin.getCorreo(), datosLogin.getContrasena());
-            if (usuario != null) {
-                return userMapper.toResponse(usuario);
-            } else {
-                throw new BadRequestException("La contraseña es incorrecta");
-            }
-        } else {
-            throw new BadRequestException("Credenciales inválidas");
-        }
+    public AuthResponseDTO loginUsuario(LoginDTO datosLogin) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(datosLogin.getCorreo(), datosLogin.getContrasena())
+        );
+
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        User usuario = userPrincipal.getUser();
+
+        String token = tokenProvider.createAccessToken(authentication);
+
+        AuthResponseDTO authResponse = userMapper.toAuthResponse(usuario, token);
+
+        return authResponse;
+
+
+        //if (userRepository.existsUserByCorreo(datosLogin.getCorreo())){
+        //    User usuario = userRepository.findByCorreoAndContrasena(datosLogin.getCorreo(), datosLogin.getContrasena());
+        //    if (usuario != null) {
+        //        return userMapper.toResponse(usuario);
+        //    } else {
+        //        throw new BadRequestException("La contraseña es incorrecta");
+        //    }
+        //} else {
+        //    throw new BadRequestException("Credenciales inválidas");
+        //}
     }
 
     // Implementación de los métodos de recuperación de contraseña
@@ -107,7 +136,7 @@ public class PublicUserServiceImpl implements PublicUserService {
             // Marcar el proceso como activado
             proceso.setActivado(true);
             recoverProcessRepository.save(proceso);
-            return "Token válido";
+            return "Token válido, proceso activado correctamente";
         } else {
             throw new BadRequestException("Token inválido");
         }
@@ -140,7 +169,7 @@ public class PublicUserServiceImpl implements PublicUserService {
                 throw new ResourceNotFoundException("El usuario no existe");
             }
 
-            usuario.setContrasena(newPassword);
+            usuario.setContrasena(passwordEncoder.encode(newPassword));
             userRepository.save(usuario);
 
             // Marcar el proceso como no válido después de usarlo

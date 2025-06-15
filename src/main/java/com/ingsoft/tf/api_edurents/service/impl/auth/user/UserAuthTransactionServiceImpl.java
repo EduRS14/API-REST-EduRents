@@ -29,19 +29,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserAuthTransactionServiceImpl implements UserAuthTransactionService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private AdminProductServiceImpl adminProductService;
+    private final AdminProductServiceImpl adminProductService;
 
-    @Autowired
     private final TransactionsMapper transactionsMapper;
 
     // HU13
@@ -87,23 +82,7 @@ public class UserAuthTransactionServiceImpl implements UserAuthTransactionServic
         transactionRepository.save(transaction);
     }
 
-    @Transactional()
-    @Override
-    public ShowTransactionDTO obtenerTransaccionPorId(Integer id) {
-        Transaction transaction = transactionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Transacción no encontrada"));
 
-        return transactionsMapper.toResponse(transaction);
-    }
-
-    @Transactional()
-    @Override
-    public List<ShowTransactionDTO> obtenerTransacciones() {
-        return transactionRepository.findAll()
-                .stream()
-                .map(transactionsMapper::toResponse)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public ShowTransactionDTO obtenerTransaccionPorIdPorUsuario(Integer idTransaction, Integer idUsuario) {
@@ -134,7 +113,6 @@ public class UserAuthTransactionServiceImpl implements UserAuthTransactionServic
         transaction = transactionRepository.save(transaction);
         return transactionsMapper.toResponse(transaction);
     }
-
 
     @Transactional()
     @Override

@@ -2,35 +2,80 @@ package com.ingsoft.tf.api_edurents.controller.auth.user;
 
 import com.ingsoft.tf.api_edurents.dto.product.ShowProductDTO;
 import com.ingsoft.tf.api_edurents.service.Interface.auth.user.UserAuthProductService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.*;
+import io.swagger.v3.oas.annotations.media.*;
+import io.swagger.v3.oas.annotations.responses.*;
+import io.swagger.v3.oas.annotations.tags.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Producto_Usuario", description = "API de gestion de productos para un usuario registrado")
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "Producto_Publico", description = "API de Gestion de Productos para un usuario registrado")
 @RequestMapping("/user/auth/products")
+@PreAuthorize("hasAnyRole('USER', 'SELLER')")
 public class UserAuthProductController {
     private final UserAuthProductService userAuthProductService;
 
     // HU03
 
+    @Operation(
+            summary = "Obtener productos por la ID de un vendedor",
+            description = "Permite a un usuario registrado obtener una lista de productos ofrecidos por un vendedor específico en base a su ID." +
+                    " Se devuelve una lista de objetos ShowProductDTO que representan los productos del vendedor.",
+            tags = {"productos", "usuario", "vendedor", "id", "get"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ShowProductDTO.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = { @Content(schema = @Schema())}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    content = { @Content(schema = @Schema())}
+            )
+    })
     @GetMapping("/{sellerId}")
     public ResponseEntity<List<ShowProductDTO>> obtenerProductosPorVendedor(@PathVariable Integer sellerId) {
         List<ShowProductDTO> productos = userAuthProductService.obtenerProductosPorVendedor(sellerId);
         return new ResponseEntity<List<ShowProductDTO>>(productos, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Obtener productos por la ID de un vendedor y curso",
+            description = "Permite a un usuario registrado obtener una lista de productos ofrecidos por un vendedor específico en base a su ID y el ID de un curso." +
+                    " Se devuelve una lista de objetos ShowProductDTO que representan los productos de un vendedor para ese curso.",
+            tags = {"productos", "usuario", "vendedor", "curso", "id", "get"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ShowProductDTO.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = { @Content(schema = @Schema())}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    content = { @Content(schema = @Schema())}
+            )
+    })
     @GetMapping("/{sellerId}/course/{courseId}")
     public ResponseEntity<List<ShowProductDTO>> obtenerProductosPorVendedorYCurso(
             @PathVariable Integer sellerId, @PathVariable Integer courseId) {
@@ -38,6 +83,29 @@ public class UserAuthProductController {
         return new ResponseEntity<List<ShowProductDTO>>(productos, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Obtener productos por la ID de un vendedor y carrera",
+            description = "Permite a un usuario registrado obtener una lista de productos ofrecidos por un vendedor específico en base a su ID y el ID de una carrera." +
+                    " Se devuelve una lista de objetos ShowProductDTO que representan los productos de un vendedor para esa carrera.",
+            tags = {"productos", "usuario", "vendedor", "carrera", "id", "get"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ShowProductDTO.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = { @Content(schema = @Schema())}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    content = { @Content(schema = @Schema())}
+            )
+    })
     @GetMapping("/{sellerId}/career/{careerId}")
     public ResponseEntity<List<ShowProductDTO>> obtenerProductosPorVendedorYCarrera(
             @PathVariable Integer sellerId, @PathVariable Integer careerId) {
@@ -45,6 +113,29 @@ public class UserAuthProductController {
         return new ResponseEntity<List<ShowProductDTO>>(productos, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Obtener productos por la ID de un vendedor y categoría",
+            description = "Permite a un usuario registrado obtener una lista de productos ofrecidos por un vendedor específico en base a su ID y el ID de una categoría." +
+                    " Se devuelve una lista de objetos ShowProductDTO que representan los productos de un vendedor para esa categoría.",
+            tags = {"productos", "usuario", "vendedor", "categoría", "id", "get"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ShowProductDTO.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = { @Content(schema = @Schema())}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    content = { @Content(schema = @Schema())}
+            )
+    })
     @GetMapping("/{sellerId}/category/{categoryId}")
     public ResponseEntity<List<ShowProductDTO>> obtenerProductosPorVendedorYCategoria(
             @PathVariable Integer sellerId, @PathVariable Integer categoryId) {
@@ -53,10 +144,11 @@ public class UserAuthProductController {
     }
 
     // HU 05
+
     @Operation(
             summary = "Sumar una vista al producto",
             description = "Cada vez que un usuario visualiza un producto, se incrementa en 1 el contador de vistas.",
-            tags = {"Productos", "Vistas"}
+            tags = {"Productos", "Vistas", "put"}
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -81,7 +173,7 @@ public class UserAuthProductController {
     @Operation(
             summary = "Obtener productos por vendedor ordenados por vistas",
             description = "Obtiene todos los productos publicados por un vendedor especifico y los ordena segun el numero de vistas.",
-            tags = {"Productos", "Vistas", "Vendedores"}
+            tags = {"Productos", "Vistas", "Vendedores", "get"}
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -111,7 +203,7 @@ public class UserAuthProductController {
     @Operation(
             summary = "Obtener productos recomendados por carrera",
             description = "Muestra una lista de productos recomendados para la carrera indicada, ordenados por vistas de mayor a menor.",
-            tags = {"Productos", "Recomendaciones", "Carreras", "Vistas"}
+            tags = {"Productos", "Recomendaciones", "Carreras", "Vistas", "get"}
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -134,8 +226,14 @@ public class UserAuthProductController {
     })
     @GetMapping("/recomendados/{idCareer}")
     public ResponseEntity<List<ShowProductDTO>> recomendarProductos(@PathVariable Integer idCareer){
-        userAuthProductService.obtenerProductosRecomendados(idCareer);
-        return new ResponseEntity<List<ShowProductDTO>>(HttpStatus.NO_CONTENT);
+        List<ShowProductDTO> productos = userAuthProductService.obtenerProductosRecomendados(idCareer);
+        if (productos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(productos, HttpStatus.OK);
     }
+
+
 
 }

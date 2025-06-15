@@ -1,7 +1,10 @@
 package com.ingsoft.tf.api_edurents.service.Interface.Public;
 
 import com.ingsoft.tf.api_edurents.dto.product.ShowProductDTO;
+import com.ingsoft.tf.api_edurents.dto.product.StockDTO;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PublicProductService {
@@ -33,5 +36,18 @@ public interface PublicProductService {
     List<ShowProductDTO> obtenerTop10ProductosPorVistas();
     List<ShowProductDTO> obtenerTop10ProductosPorCantidadDeIntercambios();
     List<ShowProductDTO> obtener10ProductosRecientes();
+
+    // HU10
+
+    @Transactional(readOnly = true)
+    StockDTO obtenerStockProductoPorId(Integer idProducto);
+
+
+
+    ShowProductDTO obtenerFechaExpiracion(Integer id);
+
+    ShowProductDTO obtenerEstado(Integer id);
+
+    ShowProductDTO obtenerEstadoAceptaIntercambio(Integer id);
 
 }

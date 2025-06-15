@@ -1,13 +1,14 @@
 package com.ingsoft.tf.api_edurents.service.Interface.Public;
 
 import com.ingsoft.tf.api_edurents.dto.auth.RecoverProcessDTO;
+import com.ingsoft.tf.api_edurents.dto.user.AuthResponseDTO;
 import com.ingsoft.tf.api_edurents.dto.user.LoginDTO;
 import com.ingsoft.tf.api_edurents.dto.user.RegisterDTO;
 import com.ingsoft.tf.api_edurents.dto.user.UserDTO;
 
 public interface PublicUserService {
 
-    UserDTO loginUsuario(LoginDTO datosLogin);
+    AuthResponseDTO loginUsuario(LoginDTO datosLogin);
 
     UserDTO registerUsuario(RegisterDTO datosRegistro);
 
