@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user/auth/users")
 @PreAuthorize("hasAnyRole('USER', 'SELLER','ADMIN')")
+@CrossOrigin(origins = {"http://localhost:4200/", "https://edurents.vercel.app"})
 public class UserAuthUserController {
 
     private final UserAuthUserService userAuthUserService;

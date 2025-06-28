@@ -22,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("admin/exchanges")
 @PreAuthorize("hasRole('ADMIN')")
+@CrossOrigin(origins = {"http://localhost:4200/", "https://edurents.vercel.app"})
 public class AdminExchangeOfferController {
 
     private final AdminExchangeOfferService adminExchangeOfferService;

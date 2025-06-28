@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface PublicProductService {
 
+    List<ShowProductDTO> obtenerProductoPorNombre(String nombre);
+
     // HU 01
     ShowProductDTO obtenerProductoPorId(Integer id);
 

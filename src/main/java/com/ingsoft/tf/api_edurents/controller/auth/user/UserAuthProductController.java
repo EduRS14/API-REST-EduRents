@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user/auth/products")
 @PreAuthorize("hasAnyRole('USER', 'SELLER','ADMIN')")
+@CrossOrigin(origins = {"http://localhost:4200/", "https://edurents.vercel.app"})
 public class UserAuthProductController {
     private final UserAuthProductService userAuthProductService;
 

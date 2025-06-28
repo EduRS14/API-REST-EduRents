@@ -42,7 +42,6 @@ public class RecoverProcessMapper {
         RecoverProcessDTO dto = new RecoverProcessDTO();
         dto.setId(proceso.getId());
         dto.setCorreo(proceso.getCorreo());
-        dto.setToken_original(proceso.getToken_original());
         dto.setFechaExpiracion(proceso.getFechaExpiracion());
         return dto;
     }

@@ -33,6 +33,7 @@ import java.util.Map;
 @Tag(name = "Transaccion_Administracion", description = "API de Gestion de Transacciones desde la administracion")
 @RequestMapping("admin/transactions")
 @PreAuthorize("hasRole('ADMIN')")
+@CrossOrigin(origins = {"http://localhost:4200/", "https://edurents.vercel.app"})
 public class AdminTransactionController {
 
     private final AdminTransactionService adminTransactionService;

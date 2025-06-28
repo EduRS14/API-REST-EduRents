@@ -22,6 +22,7 @@ import java.util.List;
 @RequestMapping("/user/auth/sellers")
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('USER', 'SELLER','ADMIN')")
+@CrossOrigin(origins = {"http://localhost:4200/", "https://edurents.vercel.app"})
 public class UserAuthSellerController {
 
     private final UserAuthSellerService sellerService;

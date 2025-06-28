@@ -19,6 +19,7 @@ import java.util.List;
 @RequestMapping("/user/auth/followed-products")
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('USER', 'SELLER','ADMIN')")
+@CrossOrigin(origins = {"http://localhost:4200/", "https://edurents.vercel.app"})
 public class UserAuthFollowedProductController {
 
     private final UserAuthFollowedProductService userAuthFollowedProductService;

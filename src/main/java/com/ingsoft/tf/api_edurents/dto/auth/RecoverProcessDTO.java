@@ -8,6 +8,5 @@ import java.time.LocalDateTime;
 public class RecoverProcessDTO {
     private Integer id;
     private String correo;
-    private String token_original;
     private LocalDateTime fechaExpiracion;
 }

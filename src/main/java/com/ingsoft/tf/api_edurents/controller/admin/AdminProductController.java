@@ -21,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("admin/products")
 @PreAuthorize("hasRole('ADMIN')")
+@CrossOrigin(origins = {"http://localhost:4200/", "https://edurents.vercel.app"})
 public class AdminProductController {
 
     private final AdminProductService adminProductService;

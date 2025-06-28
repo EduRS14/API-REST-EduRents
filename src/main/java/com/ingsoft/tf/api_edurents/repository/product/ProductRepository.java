@@ -109,6 +109,5 @@ ORDER BY p.vistas DESC
     @Query("SELECT p FROM Product p ORDER BY p.fecha_creacion DESC ")
     List<Product> findAllByOrderByFecha_creacionDesc(Pageable pageable);
 
-
-
+    List<Product> findByNombreContainingIgnoreCase(String nombre);
 }

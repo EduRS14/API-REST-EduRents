@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("admin/users")
 @PreAuthorize("hasRole('ADMIN')")
+@CrossOrigin(origins = {"http://localhost:4200/", "https://edurents.vercel.app"})
 public class AdminUserController {
 
     private final AdminUserService adminUserService;

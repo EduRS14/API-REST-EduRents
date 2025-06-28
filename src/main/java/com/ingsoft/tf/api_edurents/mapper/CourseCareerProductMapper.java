@@ -9,6 +9,8 @@ public class CourseCareerProductMapper {
     public CourseCareerDTO toResponse(CoursesCareersProduct coursesCareersProduct) {
         CourseCareerDTO dto = new CourseCareerDTO();
 
+        dto.setId(coursesCareersProduct.getId());
+
         dto.setId_curso(coursesCareersProduct.getCurso_carrera().getCurso().getId());
         dto.setCurso(coursesCareersProduct.getCurso_carrera().getCurso().getNombre());
 

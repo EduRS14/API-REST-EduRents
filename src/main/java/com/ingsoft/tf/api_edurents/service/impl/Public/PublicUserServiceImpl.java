@@ -1,5 +1,9 @@
 package com.ingsoft.tf.api_edurents.service.impl.Public;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import com.ingsoft.tf.api_edurents.config.TokenProvider;
 import com.ingsoft.tf.api_edurents.config.UserPrincipal;
 import com.ingsoft.tf.api_edurents.dto.auth.RecoverProcessDTO;
@@ -16,17 +20,26 @@ import com.ingsoft.tf.api_edurents.model.entity.user.User;
 import com.ingsoft.tf.api_edurents.repository.auth.RecoverProcessRepository;
 import com.ingsoft.tf.api_edurents.repository.user.UserRepository;
 import com.ingsoft.tf.api_edurents.service.Interface.Public.PublicUserService;
+import com.ingsoft.tf.api_edurents.service.impl.EmailService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +63,11 @@ public class PublicUserServiceImpl implements PublicUserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Value("${google.client-id}")
+    private String googleClientId;
+    @Autowired
+    private EmailService emailService;
 
     @Transactional
     @Override
@@ -93,6 +111,63 @@ public class PublicUserServiceImpl implements PublicUserService {
         //}
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public ResponseEntity<?> loginGoogle(String idTokenString) {
+        try {
+
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+                    new NetHttpTransport(),
+                    GsonFactory.getDefaultInstance()
+            )
+                    .setAudience(Collections.singletonList(googleClientId))
+                    .build();
+
+            GoogleIdToken idToken = verifier.verify(idTokenString);
+            if (idToken != null) {
+                GoogleIdToken.Payload payload = idToken.getPayload();
+                String email = payload.getEmail();
+                String name = (String) payload.get("name");
+
+                User usuario = userRepository.findByCorreo(email);
+
+                if (usuario != null) {
+
+                    GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
+
+                    UserPrincipal userPrincipal = new UserPrincipal(
+                            usuario.getId(),
+                            usuario.getCorreo(),
+                            usuario.getContrasena(),
+                            Collections.singleton(authority),
+                            usuario
+                    );
+
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(
+                            userPrincipal, null, userPrincipal.getAuthorities()
+                    );
+
+                    String token = tokenProvider.createAccessToken(authentication);
+
+                    AuthResponseDTO authResponse = userMapper.toAuthResponse(usuario, token);
+                    return ResponseEntity.ok(authResponse);
+
+                } else {
+                    return ResponseEntity.ok(Map.of(
+                            "usuarioNoRegistrado", true,
+                            "correo", email,
+                            "nombre", name
+                    ));
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ID Token inválido");
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Muy útil en desarrollo
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error verificando token de Google");
+        }
+    }
+
     // Implementación de los métodos de recuperación de contraseña
     @Transactional
     @Override
@@ -106,6 +181,14 @@ public class PublicUserServiceImpl implements PublicUserService {
                 recoverProcessRepository.save(existingProcess);
             }
             RecoverProcess proceso = recoverProcessMapper.toEntity(correo);
+
+            try {
+                emailService.enviarCorreoRecuperacion(correo, proceso.getToken_original());
+            } catch (MessagingException e) {
+                throw new RuntimeException("Error al enviar correo de recuperación", e);
+            }
+
+
             return recoverProcessMapper.toResponse(proceso);
         } else {
             throw new BadRequestException("El correo no pertenece a ningún usuario registrado");

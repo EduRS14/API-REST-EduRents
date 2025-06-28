@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class CourseCareerDTO {
+    private Integer id;
     private Integer id_curso;
     private String curso;
     private Integer id_carrera;

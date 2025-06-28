@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("/user/auth/alerts")
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('USER', 'SELLER','ADMIN')")
+@CrossOrigin(origins = {"http://localhost:4200/", "https://edurents.vercel.app"})
 public class UserAuthAlertController {
 
     private final UserAuthAlertServiceImpl alertService;

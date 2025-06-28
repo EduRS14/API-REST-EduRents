@@ -30,6 +30,18 @@ public class PublicProductServiceImpl implements PublicProductService {
     @Autowired
     private ProductMapper productMapper;
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<ShowProductDTO> obtenerProductoPorNombre(String nombre) {
+        List<Product> productos = productRepository.findByNombreContainingIgnoreCase(nombre);
+        if (productos.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron productos con el nombre: " + nombre);
+        }
+        return productos.stream()
+                .map(producto -> productMapper.toResponse(producto))
+                .collect(Collectors.toList());
+    }
+
     // HU 01
 
     @Transactional(readOnly = true)

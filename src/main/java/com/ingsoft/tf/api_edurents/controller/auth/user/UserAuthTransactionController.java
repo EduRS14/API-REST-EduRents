@@ -26,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user/auth/transactions")
 @PreAuthorize("hasAnyRole('USER', 'SELLER','ADMIN')")
+@CrossOrigin(origins = {"http://localhost:4200/", "https://edurents.vercel.app"})
 public class UserAuthTransactionController {
 
     private final UserAuthTransactionService userAuthTransactionService;
