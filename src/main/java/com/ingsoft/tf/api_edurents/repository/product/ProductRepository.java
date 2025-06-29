@@ -41,7 +41,7 @@ WHERE ccp.curso_carrera.curso.id = :courseId
     // HU 04
 
     @Query("SELECT DISTINCT p FROM Product p JOIN p.cursos_carreras ccp WHERE ccp.curso_carrera.carrera.id = :id_career")
-    List<Product> findByCareer(@Param("career") Integer id_career);
+    List<Product> findByCareer(@Param("id_career") Integer id_career);
 
     @Query("SELECT DISTINCT p FROM Product p JOIN p.cursos_carreras ccp WHERE ccp.curso_carrera.curso.id = :id_course")
     List<Product> findByCourse(@Param("id_course") Integer id_course);
