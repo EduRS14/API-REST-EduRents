@@ -18,17 +18,14 @@ public class SellerMapper {
         SellerDTO dto = new SellerDTO();
 
         dto.setId(seller.getId());
-        dto.setResena(seller.getResena());
+        dto.setPresentacion(seller.getPresentacion());
         dto.setConfiabilidad(seller.getConfiabilidad());
         dto.setSin_demoras(seller.getSin_demoras());
         dto.setBuena_atencion(seller.getBuena_atencion());
-
-        if (seller.getUsuario() != null) {
-            String nombreCompleto = seller.getUsuario().getNombres() + " " + seller.getUsuario().getApellidos();
-            dto.setNombreUsuario(nombreCompleto);
-        } else {
-            dto.setNombreUsuario("");
-        }
+        dto.setNombreUsuario(seller.getNombre_usuario());
+        dto.setNombreNegocio(seller.getNombre_negocio());
+        dto.setCorreoElectronico(seller.getCorreo_electronico());
+        dto.setNumeroTelefono(seller.getNumero_telefono());
 
         return dto;
     }
@@ -36,7 +33,7 @@ public class SellerMapper {
     public SellerReputationDTO toSellerReputationDTO(Seller seller) {
         SellerReputationDTO dto = new SellerReputationDTO();
 
-        dto.setResena(seller.getResena());
+        dto.setPresentacion(seller.getPresentacion());
         dto.setConfiabilidad(seller.getConfiabilidad());
         dto.setSin_demoras(seller.getSin_demoras());
         dto.setBuena_atencion(seller.getBuena_atencion());

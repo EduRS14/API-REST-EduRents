@@ -26,7 +26,7 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionStatus estado;
 
-    @Column(name = "fecha_confirmacion_entrega", nullable = false)
+    @Column(name = "fecha_confirmacion_entrega")
     private LocalDateTime fecha_confirmacion_entrega;
 
     @Column(name = "motivo_reclamo", length = 500)

@@ -20,12 +20,14 @@ public class AdminSellerServiceImpl implements AdminSellerService {
     public SellerDTO convertToDTO(Seller seller) {
         SellerDTO sellerDTO = new SellerDTO();
         sellerDTO.setId(seller.getId());
-        String nombreCompleto = seller.getUsuario().getNombres() + " " + seller.getUsuario().getApellidos();
-        sellerDTO.setNombreUsuario(nombreCompleto);
-        sellerDTO.setResena(seller.getResena());
+        sellerDTO.setNombreUsuario(seller.getNombre_usuario());
+        sellerDTO.setPresentacion(seller.getPresentacion());
         sellerDTO.setConfiabilidad(seller.getConfiabilidad());
         sellerDTO.setSin_demoras(seller.getSin_demoras());
         sellerDTO.setBuena_atencion(seller.getBuena_atencion());
+        sellerDTO.setNombreNegocio(seller.getNombre_negocio());
+        sellerDTO.setCorreoElectronico(seller.getCorreo_electronico());
+        sellerDTO.setNumeroTelefono(seller.getNumero_telefono());
         return sellerDTO;
     }
 

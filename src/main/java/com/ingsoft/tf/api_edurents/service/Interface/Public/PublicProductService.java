@@ -2,6 +2,7 @@ package com.ingsoft.tf.api_edurents.service.Interface.Public;
 
 import com.ingsoft.tf.api_edurents.dto.product.ShowProductDTO;
 import com.ingsoft.tf.api_edurents.dto.product.StockDTO;
+import com.ingsoft.tf.api_edurents.model.entity.product.ProductStatus;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -24,6 +25,16 @@ public interface PublicProductService {
     List<ShowProductDTO> obtenerProductosPorCursoYCarrera(Integer idCarrera, Integer idCurso);
     List<ShowProductDTO> obtenerProductosPorCategoria(Integer idCategoria);
     List<ShowProductDTO> obtenerProductosPorCarreraCursoYCategoria(Integer idCarrera, Integer idCurso, Integer idCategoria);
+
+    List<ShowProductDTO> obtenerProductosConFiltros(
+            List<Integer> carreras,
+            List<Integer> cursos,
+            List<Integer> categorias,
+            Double precioMin,
+            Double precioMax,
+            boolean ordenarPorVistas,
+            ProductStatus estado
+    );
 
     // HU 05
 
@@ -51,5 +62,7 @@ public interface PublicProductService {
     ShowProductDTO obtenerEstado(Integer id);
 
     ShowProductDTO obtenerEstadoAceptaIntercambio(Integer id);
+
+    void aumentarVistas(Integer idProducto);
 
 }

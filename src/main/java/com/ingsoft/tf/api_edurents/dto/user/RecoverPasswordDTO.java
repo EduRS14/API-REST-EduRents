@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class RecoverPasswordDTO {
     @NotNull(message = "Ingrese un correo válido")
-    @Size(min = 5, max = 30, message = "El correo debe tener entre 5 y 50 caracteres")
+    @Size(min = 5, max = 500, message = "El correo debe tener entre 5 y 500 caracteres")
     private String correo;
 
     @NotNull(message = "Ingrese una contraseña válida")

@@ -55,8 +55,9 @@ public class UserAuthTransactionServiceImpl implements UserAuthTransactionServic
             throw new BadRequestException("No puedes realizar una transacción con tu propio producto.");
         }
 
-        if (transactionRepository.existsByProductoIdAndUsuarioId(product.getId(), user.getId())) {
-            throw new BadRequestException("Ya realizaste una transacción para este producto.");
+        List<Transaction> existingTransactions = transactionRepository.findByUsuarioId(user.getId());
+        if (existingTransactions.stream().anyMatch(t -> t.getProducto().getId().equals(product.getId()) && t.getEstado() == TransactionStatus.PENDIENTE)) {
+            throw new BadRequestException("Ya existe una transacción pendiente para este producto.");
         }
 
         Transaction transaction = new Transaction();
@@ -182,6 +183,19 @@ public class UserAuthTransactionServiceImpl implements UserAuthTransactionServic
                 .stream()
                 .map(transactionsMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void actualizarStockProductos(Integer idProducto) {
+        Product product = productRepository.findById(idProducto)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + idProducto));
+
+        if (product.getCantidad_disponible() <= 0) {
+            throw new BadRequestException("No se puede actualizar el stock de un producto sin stock.");
+        }
+
+        product.setCantidad_disponible(product.getCantidad_disponible() - 1);
+        productRepository.save(product);
     }
 
 }

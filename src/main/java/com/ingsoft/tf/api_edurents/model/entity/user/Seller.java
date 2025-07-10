@@ -14,8 +14,20 @@ public class Seller {
     @Id
     private Integer id;
 
-    @Column(name = "resena", nullable = false)
-    private String resena;
+    @Column(name = "nombre_negocio", nullable = false)
+    private String nombre_negocio;
+
+    @Column(name = "nombre_usuario", nullable = false)
+    private String nombre_usuario;
+
+    @Column(name = "presentacion", nullable = false)
+    private String presentacion;
+
+    @Column(name = "numero_telefono", nullable = false)
+    private Integer numero_telefono;
+
+    @Column(name = "correo_electronico", nullable = false)
+    private String correo_electronico;
 
     @Column(name = "confiabilidad", nullable = false)
     private Boolean confiabilidad;
@@ -28,6 +40,9 @@ public class Seller {
 
     @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> productos = new ArrayList<Product>();
+
+    @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Resena> resenas = new ArrayList<Resena>();
 
     @OneToOne
     @MapsId

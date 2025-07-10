@@ -2,6 +2,7 @@ package com.ingsoft.tf.api_edurents.controller.Public;
 
 import com.ingsoft.tf.api_edurents.dto.product.ShowProductDTO;
 import com.ingsoft.tf.api_edurents.dto.product.StockDTO;
+import com.ingsoft.tf.api_edurents.model.entity.product.ProductStatus;
 import com.ingsoft.tf.api_edurents.service.Interface.Public.PublicProductService;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.media.*;
@@ -239,6 +240,22 @@ public class PublicProductController {
     public ResponseEntity<List<ShowProductDTO>> obtenerProductosPorCarreraCursoCategoria(@PathVariable Integer idCareer, @PathVariable Integer idCourse, @PathVariable Integer idCategory) {
         List<ShowProductDTO> productos = publicProductService.obtenerProductosPorCarreraCursoYCategoria(idCareer, idCourse, idCategory);
         return new ResponseEntity<List<ShowProductDTO>>(productos, HttpStatus.OK);
+    }
+
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<ShowProductDTO>> filtrarProductos(
+            @RequestParam(required = false) List<Integer> carrera,
+            @RequestParam(required = false) List<Integer> curso,
+            @RequestParam(required = false) List<Integer> categoria,
+            @RequestParam(required = false) Double precioMin,
+            @RequestParam(required = false) Double precioMax,
+            @RequestParam(required = false, defaultValue = "false") boolean ordenarPorVistas,
+            @RequestParam(required = false) ProductStatus estado
+    ) {
+        List<ShowProductDTO> productos = publicProductService.obtenerProductosConFiltros(
+                carrera, curso, categoria, precioMin, precioMax, ordenarPorVistas, estado
+        );
+        return ResponseEntity.ok(productos);
     }
 
     // HU 05
@@ -501,6 +518,32 @@ public class PublicProductController {
     public ResponseEntity<ShowProductDTO> obtenerSiProductoEsIntercambiable(@PathVariable Integer id) {
         ShowProductDTO dto = publicProductService.obtenerEstadoAceptaIntercambio(id);
         return ResponseEntity.ok(dto);
+    }
+
+    @Operation(
+            summary = "Aumentar vistas de un producto",
+            description = "Incrementa el contador de vistas de un producto especificado por su ID. " +
+                    "Este endpoint se utiliza para registrar la visualización de un producto por parte de un usuario.",
+            tags = {"productos", "vistas", "publico", "post"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Vistas incrementadas correctamente"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Producto no encontrado"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor"
+            )
+    })
+    @PostMapping("/{id}/views")
+    public ResponseEntity<Void> aumentarVistas(@PathVariable Integer id) {
+        publicProductService.aumentarVistas(id);
+        return ResponseEntity.ok().build();
     }
 
 

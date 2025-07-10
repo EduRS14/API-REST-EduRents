@@ -229,4 +229,24 @@ public class UserAuthTransactionController {
         return ResponseEntity.ok(userAuthTransactionService.obtenerTransaccionesPorUsuarioPorMetodoPagoPorEstado(idUser, metodo, estado));
     }
 
+    @Operation(
+            summary = "Actualizar stock de productos al confirmar entrega",
+            description = "Actualiza el stock del producto al confirmar la entrega de una transacción. " +
+                    "Se reduce la cantidad disponible del producto en 1.",
+            tags = {"transacciones", "usuario", "stock", "auth_usuario", "put"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", content = {@Content(schema = @Schema())}),
+            @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})
+    })
+    @PutMapping("/updateStock/{idProducto}")
+    public ResponseEntity<Map<String, String>> actualizarStockProductos(@PathVariable Integer idProducto) {
+        userAuthTransactionService.actualizarStockProductos(idProducto);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Stock del producto con ID " + idProducto + " actualizado exitosamente.");
+
+        return ResponseEntity.ok(response);
+    }
+
 }

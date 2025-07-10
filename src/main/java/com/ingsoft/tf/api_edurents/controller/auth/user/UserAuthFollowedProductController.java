@@ -44,7 +44,7 @@ public class UserAuthFollowedProductController {
             @ApiResponse(responseCode = "204", description = "Producto dejado de seguir"),
             @ApiResponse(responseCode = "404", description = "El seguimiento no existe")
     })
-    @DeleteMapping("product/{idProduct}/user/{idUser}/follow")
+    @DeleteMapping("/product/{idProduct}/user/{idUser}/follow")
     public ResponseEntity<Void> unfollowProduct(@PathVariable Integer idProduct, @PathVariable Integer idUser) {
         userAuthFollowedProductService.unfollowProduct(idUser, idProduct);
         return ResponseEntity.noContent().build();

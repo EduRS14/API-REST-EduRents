@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
@@ -54,6 +56,10 @@ public class WebSecurityConfig {
                     .requestMatchers(antMatcher("/public/sellers/**")).permitAll()
                     .requestMatchers(antMatcher("/public/careers")).permitAll()
                     .requestMatchers(antMatcher("/public/careers/**")).permitAll()
+                    .requestMatchers(antMatcher("/public/career")).permitAll()
+                    .requestMatchers(antMatcher("/public/career/**")).permitAll()
+                    .requestMatchers(antMatcher("/public/reviews")).permitAll()
+                    .requestMatchers(antMatcher("/public/reviews/**")).permitAll()
                     .requestMatchers("/api/v1/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**").permitAll()
                     // TODO: Cualquier otra solicitud requiere autenticación (JWT u otra autenticación configurada)
                     .anyRequest().authenticated()
@@ -80,6 +86,19 @@ public class WebSecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         // TODO: Proporciona el AuthenticationManager que gestionará la autenticación basada en los detalles de usuario y contraseña
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/public/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*");
+            }
+        };
     }
 
 }

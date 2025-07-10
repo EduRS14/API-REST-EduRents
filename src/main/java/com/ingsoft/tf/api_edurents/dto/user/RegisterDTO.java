@@ -9,15 +9,16 @@ import lombok.Data;
 @Data
 public class RegisterDTO {
     @NotNull(message = "El nombre no puede ser nulo")
-    @Size(min = 3, max = 30, message = "El nombre debe tener entre 3 y 30 caracteres")
+    @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 30 caracteres")
     private String nombres;
 
     @NotNull(message = "El apellido no puede ser nulo")
-    @Size(min = 3, max = 30, message = "El apellido debe tener entre 3 y 30 caracteres")
+    @Size(min = 3, max = 50, message = "El apellido debe tener entre 3 y 30 caracteres")
     private String apellidos;
 
     @NotNull(message = "El correo no puede ser nulo")
     @Email(message = "El correo no es valido")
+    @Size(min = 5, max = 500, message = "El correo debe tener entre 5 y 500 caracteres")
     private String correo;
 
     @NotNull(message = "La contraseña no puede ser nula")

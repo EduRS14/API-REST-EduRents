@@ -1,6 +1,7 @@
 package com.ingsoft.tf.api_edurents.service.impl.auth.user;
 
 import com.ingsoft.tf.api_edurents.dto.transfers.ShowTransactionDTO;
+import com.ingsoft.tf.api_edurents.dto.user.RegisterSellerDTO;
 import com.ingsoft.tf.api_edurents.dto.user.SellerDTO;
 import com.ingsoft.tf.api_edurents.exception.RoleNotFoundException;
 import com.ingsoft.tf.api_edurents.mapper.SellerMapper;
@@ -32,7 +33,7 @@ public class UserAuthSellerServiceImpl implements UserAuthSellerService {
     // private final ReviewRepository reviewRepository;
 
     @Override
-    public SellerDTO createSellerIfNotExists(Integer idUser) {
+    public SellerDTO createSellerIfNotExists(Integer idUser, RegisterSellerDTO registerSellerDTO) {
         User user = userRepository.findById(idUser)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -48,8 +49,16 @@ public class UserAuthSellerServiceImpl implements UserAuthSellerService {
                     //Valores por defecto de creacion
                     newSeller.setBuena_atencion(false);
                     newSeller.setConfiabilidad(false);
-                    newSeller.setResena("Sin reseña aún");
+                    newSeller.setPresentacion(registerSellerDTO.getPresentacion());
                     newSeller.setSin_demoras(false);
+                    newSeller.setNombre_usuario(user.getNombres() + " " + user.getApellidos());
+                    newSeller.setNombre_negocio(registerSellerDTO.getNombreNegocio());
+                    if (registerSellerDTO.getCorreo() != null) {
+                        newSeller.setCorreo_electronico(registerSellerDTO.getCorreo());
+                    } else {
+                        newSeller.setCorreo_electronico(user.getCorreo());
+                    }
+                    newSeller.setNumero_telefono(registerSellerDTO.getNumeroTelefono());
                     // newSeller.setCreatedAt(LocalDateTime.now());
                     return sellerMapper.toSellerDTO(sellerRepository.save(newSeller));
                 });

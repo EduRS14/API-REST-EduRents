@@ -32,4 +32,6 @@ public interface UserAuthTransactionService {
     List<ShowTransactionDTO> obtenerTransaccionesPorUsuarioPorMetodoPagoPorEstado(Integer idUser, PaymentMethod metodo, TransactionStatus estado);
 
 
+    void actualizarStockProductos(Integer idProducto);
+
 }

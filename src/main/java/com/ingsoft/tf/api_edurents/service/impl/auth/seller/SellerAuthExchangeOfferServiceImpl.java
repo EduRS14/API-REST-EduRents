@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -50,32 +51,23 @@ public class SellerAuthExchangeOfferServiceImpl implements SellerAuthExchangeOff
 
     @Transactional
     @Override
-    public void aceptarOferta(Integer id) {
-        ExchangeOffer oferta = exchangeOfferRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Oferta con ID " + id + " no encontrada"));
+    public void aceptarIntercambio(Integer idExchangeOffer, Integer idSeller, Boolean aceptar) {
+        ExchangeOffer intercambio = exchangeOfferRepository.findById(idExchangeOffer)
+                .orElseThrow(() -> new ResourceNotFoundException("Intercambio con ID " + idExchangeOffer + " no encontrado"));
 
-        if (!oferta.getEstado().equals(ExchangeStatus.PENDIENTE)) {
-            throw new BadRequestException("Solo se pueden aceptar ofertas en estado PENDIENTE");
+        // Validar que el intercambio pertenezca al vendedor
+        if (!intercambio.getProducto().getVendedor().getId().equals(idSeller)) {
+            throw new BadRequestException("El intercambio no pertenece al vendedor con ID " + idSeller);
         }
 
-        oferta.setEstado(ExchangeStatus.ACEPTADO);
-        exchangeOfferRepository.save(oferta);
-    }
-
-    @Transactional
-    @Override
-    public void rechazarOferta(Integer id) {
-        ExchangeOffer oferta = exchangeOfferRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Oferta con ID " + id + " no encontrada"));
-
-        if (!oferta.getEstado().equals(ExchangeStatus.PENDIENTE)) {
-            throw new BadRequestException("Solo se pueden rechazar ofertas en estado PENDIENTE");
+        // Actualizar el estado del intercambio
+        if (aceptar) {
+            intercambio.setEstado(ExchangeStatus.ACEPTADO);
+        } else {
+            intercambio.setEstado(ExchangeStatus.RECHAZADO);
         }
-
-        oferta.setEstado(ExchangeStatus.RECHAZADO);
-        exchangeOfferRepository.save(oferta);
+        exchangeOfferRepository.save(intercambio);
     }
-
 
 
 }

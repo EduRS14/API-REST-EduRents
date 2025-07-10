@@ -10,7 +10,7 @@ import lombok.NonNull;
 public class LoginDTO {
     @NotNull(message = "El correo no puede ser nulo")
     @NotBlank(message = "El correo es obligatorio")
-    @Size(min = 5, max = 30)
+    @Size(min = 5, max = 500)
     private String correo;
 
     @NotNull(message = "La contraseña no puede ser nula")

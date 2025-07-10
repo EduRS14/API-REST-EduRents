@@ -1,6 +1,7 @@
 package com.ingsoft.tf.api_edurents.controller.auth.user;
 
 import com.ingsoft.tf.api_edurents.dto.transfers.ShowTransactionDTO;
+import com.ingsoft.tf.api_edurents.dto.user.RegisterSellerDTO;
 import com.ingsoft.tf.api_edurents.dto.user.SellerDTO;
 import com.ingsoft.tf.api_edurents.service.Interface.auth.user.UserAuthSellerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,8 +36,9 @@ public class UserAuthSellerController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     @PostMapping("/user/{idUser}")
-    public ResponseEntity<SellerDTO> createSeller(@PathVariable Integer idUser) {
-        return ResponseEntity.ok(sellerService.createSellerIfNotExists(idUser));
+    public ResponseEntity<SellerDTO> createSeller(@PathVariable Integer idUser,
+                                                  @RequestBody(required = false) RegisterSellerDTO registerSellerDTO) {
+        return ResponseEntity.ok(sellerService.createSellerIfNotExists(idUser, registerSellerDTO));
     }
 
     @Operation(summary = "Obtener transacciones de un vendedor",

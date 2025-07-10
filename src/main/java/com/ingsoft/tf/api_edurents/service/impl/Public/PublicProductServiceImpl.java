@@ -6,8 +6,12 @@ import com.ingsoft.tf.api_edurents.exception.BadRequestException;
 import com.ingsoft.tf.api_edurents.exception.ResourceNotFoundException;
 import com.ingsoft.tf.api_edurents.mapper.ProductMapper;
 import com.ingsoft.tf.api_edurents.model.entity.product.Product;
+import com.ingsoft.tf.api_edurents.model.entity.product.ProductStatus;
 import com.ingsoft.tf.api_edurents.repository.product.ProductRepository;
 import com.ingsoft.tf.api_edurents.service.Interface.Public.PublicProductService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,6 +127,70 @@ public class PublicProductServiceImpl implements PublicProductService {
         }
         return productos.stream()
                 .map(producto -> productMapper.toResponse(producto))
+                .collect(Collectors.toList());
+    }
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ShowProductDTO> obtenerProductosConFiltros(
+            List<Integer> carreras,
+            List<Integer> cursos,
+            List<Integer> categorias,
+            Double precioMin,
+            Double precioMax,
+            boolean ordenarPorVistas,
+            ProductStatus estado
+    ) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> cq = cb.createQuery(Product.class);
+        Root<Product> root = cq.from(Product.class);
+
+        Join<Object, Object> cursosCarrerasJoin = root.join("cursos_carreras", JoinType.LEFT);
+        Join<Object, Object> cursoCarreraJoin = cursosCarrerasJoin.join("curso_carrera", JoinType.LEFT);
+        Join<Object, Object> categoriaJoin = root.join("categorias", JoinType.LEFT);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (carreras != null && !carreras.isEmpty()) {
+            predicates.add(cursoCarreraJoin.get("carrera").get("id").in(carreras));
+        }
+
+        if (cursos != null && !cursos.isEmpty()) {
+            predicates.add(cursoCarreraJoin.get("curso").get("id").in(cursos));
+        }
+
+        if (categorias != null && !categorias.isEmpty()) {
+            predicates.add(categoriaJoin.get("categoria").get("id").in(categorias));
+        }
+
+        if (precioMin != null) {
+            predicates.add(cb.greaterThanOrEqualTo(root.get("precio"), precioMin));
+        }
+
+        if (precioMax != null) {
+            predicates.add(cb.lessThanOrEqualTo(root.get("precio"), precioMax));
+        }
+        if (estado != null) {
+            predicates.add(cb.equal(root.get("estado"), estado));
+        }
+
+        cq.select(root).distinct(true).where(cb.and(predicates.toArray(new Predicate[0])));
+        if (ordenarPorVistas) {
+            cq.orderBy(cb.desc(root.get("vistas")));
+        }
+
+        List<Product> productos = entityManager.createQuery(cq).getResultList();
+
+        if (productos.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron productos con los filtros proporcionados");
+        }
+
+
+        return productos.stream()
+                .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -289,6 +358,14 @@ public class PublicProductServiceImpl implements PublicProductService {
         return dto;
     }
 
+    @Override
+    public void aumentarVistas(Integer idProducto) {
+        Product producto = productRepository.findById(idProducto)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + idProducto));
+
+        producto.setVistas(producto.getVistas() + 1);
+        productRepository.save(producto);
+    }
 
 
 }
